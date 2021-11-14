@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/coins">
+
+    <fragment
+        android:id="@+id/coins"
+        android:name="hu.jazzy.hodlpal.fragments.Coins"
+        android:label="fragment_coins"
+        tools:layout="@layout/fragment_coins" >
+
+        <action
+            android:id="@+id/action_coins_to_coinDetails"
+            app:destination="@id/coinDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/portfolio"
+        android:name="hu.jazzy.hodlpal.fragments.Portfolio"
+        android:label="fragment_portfolio"
+        tools:layout="@layout/fragment_portfolio" />
+    <fragment
+        android:id="@+id/wallet"
+        android:name="hu.jazzy.hodlpal.fragments.Wallet"
+        android:label="fragment_wallet"
+        tools:layout="@layout/fragment_wallet" />
+    <fragment
+        android:id="@+id/coinDetails"
+        android:name="hu.jazzy.hodlpal.fragments.CoinDetails"
+        android:label="CoinDetails" >
+        <action
+            android:id="@+id/action_coinDetails_to_coins"
+            app:destination="@id/coins" />
+        <argument
+            android:name="coin_id"
+            app:argType="string"
+            android:defaultValue="bitcoin" />
+    </fragment>
+
+</navigation>

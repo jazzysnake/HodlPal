@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HodlPal</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="coins">Coins</string>
+    <string name="wallet">Wallet</string>
+</resources>
