@@ -1,6 +1,5 @@
 package hu.jazzy.hodlpal.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,10 +10,11 @@ import hu.jazzy.hodlpal.repository.CoinRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class CoinsViewModel(private val repository: CoinRepository) :ViewModel() {
+class CoinsViewModel :ViewModel() {
 
     private var coinsResponse: MutableLiveData<Response<CoinList>> = MutableLiveData()
     private var coinsSearch: MutableLiveData<ArrayList<Coin>> = MutableLiveData()
+    private val repository:CoinRepository = CoinRepository()
 
 
     fun getCoinsResponse():LiveData<Response<CoinList>>{

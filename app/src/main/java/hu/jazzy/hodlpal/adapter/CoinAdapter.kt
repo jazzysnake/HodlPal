@@ -13,7 +13,6 @@ import hu.jazzy.hodlpal.model.Coin
 class CoinAdapter : RecyclerView.Adapter<CoinAdapter.CoinViewHolder>() {
 
     private var list = emptyList<Coin>()
-        //arrayOf("Bitcoin","Ethereum","Monero","Cardano","Solana","Secret","Hedera","Rune","Avax","Radix")
 
     inner class CoinViewHolder(var binding: CardLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -24,12 +23,12 @@ class CoinAdapter : RecyclerView.Adapter<CoinAdapter.CoinViewHolder>() {
 
     override fun onBindViewHolder(holder: CoinViewHolder, position: Int) {
         holder.binding.cardTitle.text = list[position].name
-        holder.binding.rankText.text = "#"+list[position].rank.toString()
+        holder.binding.rankText.text = ("#"+list[position].rank.toString())
         holder.binding.cardImage.load(list[position].icon){
             placeholder(R.drawable.cryptocurrencies)
         }
         holder.binding.cardView.setOnClickListener {
-            val action = CoinsDirections.actionCoinsToCoinDetails(list[position].id)
+            val action = CoinsDirections.actionCoinsToCoinDetails(list[position].rank-1)
             holder.binding.cardView.findNavController().navigate(action)
         }
     }

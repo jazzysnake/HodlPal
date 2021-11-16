@@ -33,9 +33,9 @@
             android:id="@+id/action_coinDetails_to_coins"
             app:destination="@id/coins" />
         <argument
-            android:name="coin_id"
-            app:argType="string"
-            android:defaultValue="bitcoin" />
+            android:name="coin_index"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 
 </navigation>

@@ -16,18 +16,4 @@ class CoinRepository {
             currency = "USD"
         )
     }
-
-//    suspend fun getCoinData(
-//        id :String,
-//    ):Call<CoinData>{
-//        Log.d("COINID",id)
-//        return RetrofitInstance.api.getCoinData(
-//            id,
-////            localization = "false",
-////            tickers = false,
-////            community_data = false,
-////            developer_data = false,
-////            sparkline = false
-//                )
-//    }
 }

@@ -1,28 +1,26 @@
 package hu.jazzy.hodlpal.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.jazzy.hodlpal.adapter.CoinAdapter
 import hu.jazzy.hodlpal.databinding.FragmentCoinsBinding
-import hu.jazzy.hodlpal.repository.CoinRepository
 import hu.jazzy.hodlpal.viewmodels.CoinsViewModel
-import hu.jazzy.hodlpal.viewmodels.CoinsViewModelFactory
+
 
 class Coins : Fragment(),SearchView.OnQueryTextListener {
 
     private lateinit var binding : FragmentCoinsBinding
     private lateinit var adapter: CoinAdapter
 
-    private lateinit var viewModel: CoinsViewModel
+    private val viewModel: CoinsViewModel by activityViewModels()
     private lateinit var searchView: SearchView
 
     override fun onCreateView(
@@ -34,16 +32,11 @@ class Coins : Fragment(),SearchView.OnQueryTextListener {
         searchView=binding.searchView
         searchView.setOnQueryTextListener(this)
         initRecyclerView()
-        val repository = CoinRepository()
-        val viewModelFactory = CoinsViewModelFactory(repository)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(CoinsViewModel::class.java)
         viewModel.getCoinsResponse().observe(viewLifecycleOwner, Observer {
             response -> if (response!=null){
             if (response.isSuccessful){
                 if (response.body()!=null){
-                    Log.d("RESPONSE",response.code().toString())
-                    if (response.body()!!.coins!=null)
-                        response.body()?.let { adapter.setData(it.coins) }
+                    response.body()?.let { adapter.setData(it.coins) }
                 }
             }
         } else{

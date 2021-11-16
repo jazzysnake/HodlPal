@@ -5,4 +5,10 @@
     <string name="portfolio">Portfolio</string>
     <string name="coins">Coins</string>
     <string name="wallet">Wallet</string>
+    <string name="current_price">Current Price: </string>
+    <string name="rank">Rank:</string>
+    <string name="market_cap">Market cap:</string>
+    <string name="total_supply">Total supply:</string>
+    <string name="available_supply">Available supply:</string>
+    <string name="add_to_wallet">Add to Wallet</string>
 </resources>

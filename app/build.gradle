@@ -2,14 +2,14 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
 }
-
+apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 android {
     compileSdk 31
 
     defaultConfig {
         applicationId "hu.jazzy.hodlpal"
-        minSdk 21
+        minSdk 26
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -55,8 +55,22 @@ dependencies {
     //kotlin coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+    //viewModel
+    def viewModel_version = "2.4.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModel_version"
+    //implementation "androidx.lifecycle:lifecycle-extensions:$viewModel_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$viewModel_version"
+
     //coil
     implementation("io.coil-kt:coil:1.4.0")
+    //room
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
+
+
+
 
 }
