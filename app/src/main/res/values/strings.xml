@@ -11,4 +11,5 @@
     <string name="total_supply">Total supply:</string>
     <string name="available_supply">Available supply:</string>
     <string name="add_to_wallet">Add to Wallet</string>
+    <string name="purchase_amount">Purchase amount</string>
 </resources>

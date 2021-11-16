@@ -28,7 +28,7 @@ class CoinAdapter : RecyclerView.Adapter<CoinAdapter.CoinViewHolder>() {
             placeholder(R.drawable.cryptocurrencies)
         }
         holder.binding.cardView.setOnClickListener {
-            val action = CoinsDirections.actionCoinsToCoinDetails(list[position].rank-1)
+            val action = CoinsDirections.actionCoinsToCoinDetails(list[position].rank)
             holder.binding.cardView.findNavController().navigate(action)
         }
     }

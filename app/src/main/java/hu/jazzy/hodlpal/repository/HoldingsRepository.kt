@@ -10,4 +10,8 @@ class HoldingsRepository(private val dao: Dao) {
     suspend fun addHeldCoin(heldCoin: HeldCoin){
         dao.addHeldCoin(heldCoin)
     }
+
+    suspend fun updateHeldCoin(heldCoin: HeldCoin){
+        dao.updateHeldCoin(heldCoin)
+    }
 }

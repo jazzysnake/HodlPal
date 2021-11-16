@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/icon_coin.xml" value="0.18854166666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/card_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_add_coin.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/fragment_coin_details.xml" value="0.16927083333333334" />
         <entry key="app/src/main/res/layout/fragment_coin_detais.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_coins.xml" value="0.17239583333333333" />

@@ -33,9 +33,24 @@
             android:id="@+id/action_coinDetails_to_coins"
             app:destination="@id/coins" />
         <argument
-            android:name="coin_index"
+            android:name="coin_rank"
             app:argType="integer"
             android:defaultValue="0" />
+        <action
+            android:id="@+id/action_coinDetails_to_addCoin"
+            app:destination="@id/addCoin" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCoin"
+        android:name="hu.jazzy.hodlpal.fragments.AddCoin"
+        android:label="fragment_add_coin"
+        tools:layout="@layout/fragment_add_coin" >
+        <action
+            android:id="@+id/action_addCoin_to_coinDetails"
+            app:destination="@id/coinDetails" />
+        <argument
+            android:name="coinRank"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

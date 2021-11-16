@@ -11,4 +11,7 @@ interface Dao {
 
     @Query("SELECT * FROM held_coin_table ORDER BY amount DESC")
     fun readAllHeldCoins():LiveData<List<HeldCoin>>
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateHeldCoin(heldCoin: HeldCoin)
 }

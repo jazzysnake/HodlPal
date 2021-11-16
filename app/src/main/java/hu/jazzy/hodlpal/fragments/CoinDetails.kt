@@ -1,7 +1,6 @@
 package hu.jazzy.hodlpal.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,19 +9,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.databinding.FragmentCoinDetaisBinding
 import hu.jazzy.hodlpal.model.Coin
-import hu.jazzy.hodlpal.database.HeldCoin
-import hu.jazzy.hodlpal.database.PersistentCoin
+
 import hu.jazzy.hodlpal.viewmodels.CoinsViewModel
 import hu.jazzy.hodlpal.viewmodels.HoldingsViewModel
 import java.text.DecimalFormat
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.util.*
 
 
 class CoinDetails : Fragment() {
@@ -32,7 +28,6 @@ class CoinDetails : Fragment() {
     private lateinit var holdingsViewModel: HoldingsViewModel// by activityViewModels()
     private val longFormat: DecimalFormat = DecimalFormat("#.#######")
     private val shortFormat: DecimalFormat = DecimalFormat("#.##")
-    private val calendar: Calendar = Calendar.getInstance()
 
 
     override fun onCreateView(
@@ -42,7 +37,7 @@ class CoinDetails : Fragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentCoinDetaisBinding.inflate(layoutInflater)
-        val index: Int = args.coinIndex
+        val index: Int = args.coinRank-1
         holdingsViewModel = ViewModelProvider(this).get(HoldingsViewModel::class.java)
         coinsViewModel.getCoinsResponse().observe(viewLifecycleOwner, { response ->
             if (response.isSuccessful) {
@@ -62,21 +57,13 @@ class CoinDetails : Fragment() {
             }
         })
 
-        holdingsViewModel.readAllHeldCoins.observe(viewLifecycleOwner,{
-            for (item in it){
-                Log.d("COINADDED",item.coin.name)
-            }
-        })
         return binding.root
     }
 
     private fun setClickListener(coin: Coin){
         binding.buyButton.setOnClickListener {
-            LocalDateTime.now()
-            val heldCoin = HeldCoin(0, PersistentCoin(coin),coin.price,
-                calendar.time,
-                1.0)
-            holdingsViewModel.addHeldCoin(heldCoin)
+            val action = CoinDetailsDirections.actionCoinDetailsToAddCoin(args.coinRank)
+            findNavController().navigate(action)
         }
     }
 
