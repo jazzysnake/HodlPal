@@ -27,4 +27,12 @@ class HoldingsViewModel(application: Application) :
             repository.addHeldCoin(heldCoin)
         }
     }
+
+    fun getHeldCoinByCoinId(coinId: String):List<HeldCoin>{
+        var list:List<HeldCoin> = emptyList()
+        viewModelScope.launch(Dispatchers.IO) {
+             list =repository.getHeldCoinByCoinId(coinId)
+        }
+        return list
+    }
 }

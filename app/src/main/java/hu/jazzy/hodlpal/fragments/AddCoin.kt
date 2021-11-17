@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import hu.jazzy.hodlpal.database.HeldCoin
@@ -26,7 +27,7 @@ class AddCoin : Fragment() {
     private val coinsViewModel: CoinsViewModel by activityViewModels()
     private val holdingsViewModel: HoldingsViewModel by activityViewModels()
     private lateinit var coin:Coin
-    private var heldCoinsSize :Int = 0
+    private var initialized = false
 
 
     override fun onCreateView(
@@ -48,11 +49,9 @@ class AddCoin : Fragment() {
 
         holdingsViewModel.readAllHeldCoins.observe(viewLifecycleOwner){
             if (it!=null){
-                var tmp = heldCoinsSize
-                heldCoinsSize=it.size
-                if (tmp<heldCoinsSize)
+                if (initialized)
                     Toast.makeText(requireContext(),"Coin successfully added",Toast.LENGTH_SHORT).show()
-
+                initialized = true
             }
         }
         setClickListener()
@@ -63,11 +62,29 @@ class AddCoin : Fragment() {
     private fun setClickListener(){
         binding.btnAddToWallet.setOnClickListener {
             val inputPrice = binding.addCoinInputPrice.text
-            val price = inputPrice!!.split(" ")[0].toDouble()
+            val price = inputPrice!!.split(" ")[0].toDoubleOrNull()
             val inputAmount = binding.addCoinInputAmount.text
-            val amount = inputAmount!!.split(" ")[0].toDouble()
-            val heldCoin = HeldCoin(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount)
-            holdingsViewModel.addHeldCoin(heldCoin)
+            val amount = inputAmount!!.split(" ")[0].toDoubleOrNull()
+            if (amount==null||price==null){
+                Toast.makeText(requireContext(),"Please input valid values",Toast.LENGTH_SHORT).show()
+            }
+            else{
+                val currentList = holdingsViewModel.getHeldCoinByCoinId(coinId = coin.id)
+                if (currentList.isEmpty()){
+                    val heldCoin = HeldCoin(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount)
+                    holdingsViewModel.addHeldCoin(heldCoin)
+                }
+                else{
+                    val purchasedCoin = currentList[0]
+                    //TODO make new table where coin id is unique, keep th existing one, rename it to history smth,
+                    //TODO adding a coin there which has already been purchased should result in updating the amount with the sum,
+                    //TODO that table is represented on the portfolio fragment
+                }
+
+
+                val action = AddCoinDirections.actionAddCoinToCoinDetails(coinRank = coin.rank)
+                findNavController().navigate(action)
+            }
         }
     }
 

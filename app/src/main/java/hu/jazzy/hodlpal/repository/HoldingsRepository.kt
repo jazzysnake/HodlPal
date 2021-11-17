@@ -11,6 +11,10 @@ class HoldingsRepository(private val dao: Dao) {
         dao.addHeldCoin(heldCoin)
     }
 
+    suspend fun getHeldCoinByCoinId(coinId:String):List<HeldCoin>{
+        return dao.getCoinByCoinID(coinId)
+    }
+
     suspend fun updateHeldCoin(heldCoin: HeldCoin){
         dao.updateHeldCoin(heldCoin)
     }

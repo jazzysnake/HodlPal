@@ -47,7 +47,8 @@
         tools:layout="@layout/fragment_add_coin" >
         <action
             android:id="@+id/action_addCoin_to_coinDetails"
-            app:destination="@id/coinDetails" />
+            app:destination="@id/coinDetails"
+            app:popUpTo="@id/coinDetails" />
         <argument
             android:name="coinRank"
             app:argType="integer" />

@@ -14,4 +14,8 @@ interface Dao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateHeldCoin(heldCoin: HeldCoin)
+
+    @Query("SELECT * FROM held_coin_table WHERE coinID = :coinid")
+    suspend fun getCoinByCoinID(coinid:String):List<HeldCoin>
+
 }
