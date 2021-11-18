@@ -22,13 +22,13 @@ class HoldingsViewModel(application: Application) :
         readAllCoinsTransactions = repository.readAllCoinsTransaction
     }
 
-    fun addHeldCoin(coinTransaction: CoinTransaction){
+    fun addCoinTx(coinTransaction: CoinTransaction){
         viewModelScope.launch(Dispatchers.IO) {
             repository.addCoinTx(coinTransaction)
         }
     }
 
-    fun getHeldCoinByCoinId(coinId: String):List<CoinTransaction>{
+    fun getCoinTxById(coinId: String):List<CoinTransaction>{
         var list:List<CoinTransaction> = emptyList()
         viewModelScope.launch(Dispatchers.IO) {
              list =repository.getCoinTxById(coinId)

@@ -27,7 +27,6 @@ class AddCoin : Fragment() {
     private val coinsViewModel: CoinsViewModel by activityViewModels()
     private val holdingsViewModel: HoldingsViewModel by activityViewModels()
     private lateinit var coin:Coin
-    private var initialized = false
 
 
     override fun onCreateView(
@@ -41,19 +40,12 @@ class AddCoin : Fragment() {
             coin=response.body()!!.coins[index]
             binding.coinNameTv.text=coin.name
             binding.imageView.load(coin.icon)
-            var priceInput  = EditText(requireContext())
+            val priceInput  = EditText(requireContext())
             priceInput.setText(coin.price.toString())
             binding.addCoinInputPrice.text=priceInput.text
         }
         }
 
-        holdingsViewModel.readAllCoinsTransactions.observe(viewLifecycleOwner){
-            if (it!=null){
-                if (initialized)
-                    Toast.makeText(requireContext(),"Coin successfully added",Toast.LENGTH_SHORT).show()
-                initialized = true
-            }
-        }
         setClickListener()
 
         return binding.root
@@ -69,17 +61,17 @@ class AddCoin : Fragment() {
                 Toast.makeText(requireContext(),"Please input valid values",Toast.LENGTH_SHORT).show()
             }
             else{
-                val currentList = holdingsViewModel.getHeldCoinByCoinId(coinId = coin.id)
-                if (currentList.isEmpty()){
-                    val heldCoin = CoinTransaction(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount)
-                    holdingsViewModel.addHeldCoin(heldCoin)
-                }
-                else{
-                    val purchasedCoin = currentList[0]
-                    //TODO make new table where coin id is unique, keep th existing one, rename it to history smth,
-                    //TODO adding a coin there which has already been purchased should result in updating the amount with the sum,
-                    //TODO that table is represented on the portfolio fragment
-                }
+//                val currentList = holdingsViewModel.getCoinTxById(coinId = coin.id)
+//                if (currentList.isEmpty()){
+                    val transaction = CoinTransaction(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount)
+                    holdingsViewModel.addCoinTx(transaction)
+                    Toast.makeText(requireContext(),"Coin successfully added",Toast.LENGTH_SHORT).show()
+//                }
+//                else{
+//                    //TODO make new table where coin id is unique, keep th existing one, rename it to history smth,
+//                    //TODO adding a coin there which has already been purchased should result in updating the amount with the sum,
+//                    //TODO that table is represented on the portfolio fragment
+//                }
 
 
                 val action = AddCoinDirections.actionAddCoinToCoinDetails(coinRank = coin.rank)
