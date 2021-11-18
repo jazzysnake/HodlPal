@@ -7,15 +7,15 @@ import androidx.room.Dao
 @Dao
 interface Dao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addHeldCoin(heldCoin: HeldCoin)
+    suspend fun addCoinTx(coinTransaction: CoinTransaction)
 
-    @Query("SELECT * FROM held_coin_table ORDER BY amount DESC")
-    fun readAllHeldCoins():LiveData<List<HeldCoin>>
+    @Query("SELECT * FROM coin_transaction_table ORDER BY txDate DESC")
+    fun readAllCoinTxs():LiveData<List<CoinTransaction>>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateHeldCoin(heldCoin: HeldCoin)
+    suspend fun updateCoinTx(coinTransaction: CoinTransaction)
 
-    @Query("SELECT * FROM held_coin_table WHERE coinID = :coinid")
-    suspend fun getCoinByCoinID(coinid:String):List<HeldCoin>
+    @Query("SELECT * FROM coin_transaction_table WHERE coinID = :coinid")
+    suspend fun getCoinTxById(coinid:String):List<CoinTransaction>
 
 }

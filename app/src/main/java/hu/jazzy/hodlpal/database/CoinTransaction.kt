@@ -5,13 +5,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "held_coin_table")
-data class HeldCoin(
+@Entity(tableName = "coin_transaction_table")
+data class CoinTransaction(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @Embedded
     var coin: PersistentCoin,
-    val purchasePrice: Double,
-    var purchaseDate: Date,
+    val txAtPrice: Double,
+    var txDate: Date,
     var amount:Double,
 )

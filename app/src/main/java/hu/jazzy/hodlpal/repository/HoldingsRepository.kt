@@ -2,20 +2,20 @@ package hu.jazzy.hodlpal.repository
 
 import androidx.lifecycle.LiveData
 import hu.jazzy.hodlpal.database.Dao
-import hu.jazzy.hodlpal.database.HeldCoin
+import hu.jazzy.hodlpal.database.CoinTransaction
 
 class HoldingsRepository(private val dao: Dao) {
-    val readAllHeldCoins:LiveData<List<HeldCoin>> = dao.readAllHeldCoins()
+    val readAllCoinsTransaction:LiveData<List<CoinTransaction>> = dao.readAllCoinTxs()
 
-    suspend fun addHeldCoin(heldCoin: HeldCoin){
-        dao.addHeldCoin(heldCoin)
+    suspend fun addCoinTx(coinTransaction: CoinTransaction){
+        dao.addCoinTx(coinTransaction)
     }
 
-    suspend fun getHeldCoinByCoinId(coinId:String):List<HeldCoin>{
-        return dao.getCoinByCoinID(coinId)
+    suspend fun getCoinTxById(coinId:String):List<CoinTransaction>{
+        return dao.getCoinTxById(coinId)
     }
 
-    suspend fun updateHeldCoin(heldCoin: HeldCoin){
-        dao.updateHeldCoin(heldCoin)
+    suspend fun updateCoinTx(coinTransaction: CoinTransaction){
+        dao.updateCoinTx(coinTransaction)
     }
 }

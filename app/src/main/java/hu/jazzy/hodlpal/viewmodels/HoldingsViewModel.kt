@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import hu.jazzy.hodlpal.database.HeldCoin
+import hu.jazzy.hodlpal.database.CoinTransaction
 import hu.jazzy.hodlpal.database.HoldingsDatabase
 import hu.jazzy.hodlpal.repository.HoldingsRepository
 import kotlinx.coroutines.Dispatchers
@@ -13,25 +13,25 @@ import kotlinx.coroutines.launch
 class HoldingsViewModel(application: Application) :
     AndroidViewModel(application) {
 
-    val readAllHeldCoins: LiveData<List<HeldCoin>>
+    val readAllCoinsTransactions: LiveData<List<CoinTransaction>>
     private val repository: HoldingsRepository
 
     init {
         val dao = HoldingsDatabase.getDataBase(application).dao()
         repository =  HoldingsRepository(dao)
-        readAllHeldCoins = repository.readAllHeldCoins
+        readAllCoinsTransactions = repository.readAllCoinsTransaction
     }
 
-    fun addHeldCoin(heldCoin: HeldCoin){
+    fun addHeldCoin(coinTransaction: CoinTransaction){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addHeldCoin(heldCoin)
+            repository.addCoinTx(coinTransaction)
         }
     }
 
-    fun getHeldCoinByCoinId(coinId: String):List<HeldCoin>{
-        var list:List<HeldCoin> = emptyList()
+    fun getHeldCoinByCoinId(coinId: String):List<CoinTransaction>{
+        var list:List<CoinTransaction> = emptyList()
         viewModelScope.launch(Dispatchers.IO) {
-             list =repository.getHeldCoinByCoinId(coinId)
+             list =repository.getCoinTxById(coinId)
         }
         return list
     }

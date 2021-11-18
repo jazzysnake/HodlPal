@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import hu.jazzy.hodlpal.adapter.HeldCoinAdapter
+import hu.jazzy.hodlpal.adapter.CoinTransactionAdapter
 import hu.jazzy.hodlpal.databinding.FragmentWalletBinding
 import hu.jazzy.hodlpal.viewmodels.HoldingsViewModel
 
@@ -15,7 +15,7 @@ class Wallet : Fragment() {
 
     private lateinit var binding : FragmentWalletBinding
     private val holdingsViewModel:HoldingsViewModel by activityViewModels()
-    private lateinit var adapter: HeldCoinAdapter
+    private lateinit var transactionAdapter: CoinTransactionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,9 +26,9 @@ class Wallet : Fragment() {
 
 
         initRecyclerView()
-        holdingsViewModel.readAllHeldCoins.observe(viewLifecycleOwner){
+        holdingsViewModel.readAllCoinsTransactions.observe(viewLifecycleOwner){
             if (it!=null){
-                adapter.setData(it)
+                transactionAdapter.setData(it)
             }
         }
 
@@ -36,8 +36,8 @@ class Wallet : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = HeldCoinAdapter()
+        transactionAdapter = CoinTransactionAdapter()
         binding.walletList.layoutManager = LinearLayoutManager(context)
-        binding.walletList.adapter = adapter
+        binding.walletList.adapter = transactionAdapter
     }
 }

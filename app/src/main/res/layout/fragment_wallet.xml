@@ -23,7 +23,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:paddingHorizontal="32dp"
-            android:text="Wallet"
+            android:text="Transactions"
             android:textAlignment="center"
             android:textSize="36sp"
             android:textStyle="bold"

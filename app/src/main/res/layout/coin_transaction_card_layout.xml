@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/held_coin_card_view"
+    android:id="@+id/coin_transaction_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -19,23 +19,34 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:baselineAligned="false"
-        android:padding="16dp"
+        android:padding="8dp"
         android:weightSum="2">
+
+        <TextView
+            android:id="@+id/coin_transaction_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="2021.07.23"
+            android:paddingBottom="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></TextView>
 
 
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/coin_transaction_date_tv">
 
             <ImageView
                 android:id="@+id/card_image"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 tools:src="@tools:sample/avatars">
 
@@ -47,10 +58,9 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/held_coin_name_tv"
+                    android:id="@+id/coin_transaction_name_tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="10"
+                    android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="bitcoin"
@@ -59,10 +69,9 @@
                 </TextView>
 
                 <TextView
-                    android:id="@+id/held_coin_symbol_tv"
+                    android:id="@+id/coin_transaction_symbol_tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="10"
+                    android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="btc"
@@ -82,10 +91,10 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/coin_transaction_date_tv">
 
             <TextView
-                android:id="@+id/held_coin_amount"
+                android:id="@+id/coin_transaction_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -94,7 +103,7 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/held_coin_price"
+                android:id="@+id/coin_transaction_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"

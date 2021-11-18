@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
-import hu.jazzy.hodlpal.database.HeldCoin
+import hu.jazzy.hodlpal.database.CoinTransaction
 import hu.jazzy.hodlpal.database.PersistentCoin
 import hu.jazzy.hodlpal.databinding.FragmentAddCoinBinding
 import hu.jazzy.hodlpal.model.Coin
@@ -47,7 +47,7 @@ class AddCoin : Fragment() {
         }
         }
 
-        holdingsViewModel.readAllHeldCoins.observe(viewLifecycleOwner){
+        holdingsViewModel.readAllCoinsTransactions.observe(viewLifecycleOwner){
             if (it!=null){
                 if (initialized)
                     Toast.makeText(requireContext(),"Coin successfully added",Toast.LENGTH_SHORT).show()
@@ -71,7 +71,7 @@ class AddCoin : Fragment() {
             else{
                 val currentList = holdingsViewModel.getHeldCoinByCoinId(coinId = coin.id)
                 if (currentList.isEmpty()){
-                    val heldCoin = HeldCoin(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount)
+                    val heldCoin = CoinTransaction(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount)
                     holdingsViewModel.addHeldCoin(heldCoin)
                 }
                 else{
