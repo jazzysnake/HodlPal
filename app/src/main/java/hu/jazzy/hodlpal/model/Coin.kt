@@ -1,8 +1,5 @@
 package hu.jazzy.hodlpal.model
 
-
-import androidx.room.ColumnInfo
-import androidx.room.Ignore
 import com.google.gson.annotations.SerializedName
 
 data class Coin(
@@ -24,16 +21,4 @@ data class Coin(
     @SerializedName("twitterUrl") val twitterUrl : String,
     @SerializedName("exp") val exp : List<String>,
 )
-//{
-//    constructor(id : String,
-//                icon : String,
-//                name : String,
-//                symbol : String,
-//                rank : Int,
-//                price : Double,
-//                priceBtc : Double,
-//                marketCap : Double,
-//                availableSupply : Double,
-//                totalSupply : Double, ):
-//            this(id,icon,name,symbol,rank,price,priceBtc,null,marketCap,availableSupply,totalSupply,null,null,null,null,null,null)
-//}
+

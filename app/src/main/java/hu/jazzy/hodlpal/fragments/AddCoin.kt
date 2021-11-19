@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
+import hu.jazzy.hodlpal.database.CoinHolding
 import hu.jazzy.hodlpal.database.CoinTransaction
 import hu.jazzy.hodlpal.database.PersistentCoin
 import hu.jazzy.hodlpal.databinding.FragmentAddCoinBinding
@@ -61,18 +62,12 @@ class AddCoin : Fragment() {
                 Toast.makeText(requireContext(),"Please input valid values",Toast.LENGTH_SHORT).show()
             }
             else{
-//                val currentList = holdingsViewModel.getCoinTxById(coinId = coin.id)
-//                if (currentList.isEmpty()){
-                    val transaction = CoinTransaction(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount)
-                    holdingsViewModel.addCoinTx(transaction)
-                    Toast.makeText(requireContext(),"Coin successfully added",Toast.LENGTH_SHORT).show()
-//                }
-//                else{
-//                    //TODO make new table where coin id is unique, keep th existing one, rename it to history smth,
-//                    //TODO adding a coin there which has already been purchased should result in updating the amount with the sum,
-//                    //TODO that table is represented on the portfolio fragment
-//                }
-
+                val transaction = CoinTransaction(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount)
+                holdingsViewModel.addCoinTx(transaction)
+                holdingsViewModel.updateCoinHolding(CoinHolding(0,PersistentCoin(coin),amount))
+                val coinHolding = CoinHolding(0,PersistentCoin(coin), amount = amount)
+                holdingsViewModel.addCoinHolding(coinHolding)
+                Toast.makeText(requireContext(),"Transaction successful",Toast.LENGTH_SHORT).show()
 
                 val action = AddCoinDirections.actionAddCoinToCoinDetails(coinRank = coin.rank)
                 findNavController().navigate(action)

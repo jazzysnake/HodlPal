@@ -26,7 +26,7 @@ class Wallet : Fragment() {
 
 
         initRecyclerView()
-        holdingsViewModel.readAllCoinsTransactions.observe(viewLifecycleOwner){
+        holdingsViewModel.readAllCoinsTransactions().observe(viewLifecycleOwner){
             if (it!=null){
                 transactionAdapter.setData(it)
             }

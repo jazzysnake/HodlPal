@@ -14,8 +14,6 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.databinding.FragmentCoinDetaisBinding
-import hu.jazzy.hodlpal.model.Coin
-
 import hu.jazzy.hodlpal.viewmodels.CoinsViewModel
 import hu.jazzy.hodlpal.viewmodels.HoldingsViewModel
 import java.text.DecimalFormat
@@ -38,7 +36,7 @@ class CoinDetails : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentCoinDetaisBinding.inflate(layoutInflater)
         val index: Int = args.coinRank-1
-        holdingsViewModel = ViewModelProvider(this).get(HoldingsViewModel::class.java)
+        holdingsViewModel = ViewModelProvider(this)[HoldingsViewModel::class.java]
         coinsViewModel.getCoinsResponse().observe(viewLifecycleOwner, { response ->
             if (response.isSuccessful) {
                 response.body()?.let {
@@ -50,7 +48,7 @@ class CoinDetails : Fragment() {
                     fillTextView(binding.totalSupplyTv,R.string.total_supply, " "+shortFormat.format(coin.totalSupply))
                     fillTextView(binding.marketCapTv,R.string.market_cap, " "+shortFormat.format(coin.marketCap)+"$")
                     fillTextView(binding.rankTv,R.string.rank, " #"+coin.rank.toString())
-                    setClickListener(coin)
+                    setClickListener()
                 }
             } else {
                 Toast.makeText(context, response.code().toString(), Toast.LENGTH_LONG).show()
@@ -60,7 +58,7 @@ class CoinDetails : Fragment() {
         return binding.root
     }
 
-    private fun setClickListener(coin: Coin){
+    private fun setClickListener(){
         binding.buyButton.setOnClickListener {
             val action = CoinDetailsDirections.actionCoinDetailsToAddCoin(args.coinRank)
             findNavController().navigate(action)
