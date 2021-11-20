@@ -28,7 +28,10 @@ interface Dao {
     @Query("SELECT * FROM coin_holdings_table WHERE coinID = :coinId")
     fun getCoinHoldingByCoinID(coinId: String): LiveData<CoinHolding>
 
-    @Query("UPDATE coin_holdings_table SET amount=amount+:plusAmount WHERE coinID = :coinId")
-    suspend fun updateCoinHolding(coinId: String,plusAmount: Double):Int
+    @Query("UPDATE coin_holdings_table SET amount=amount+:plusAmount, price=:price WHERE coinID = :coinId")
+    suspend fun updateCoinHolding(coinId: String,plusAmount: Double,price:Double):Int
+//
+//    @Query("UPDATE coin_holdings_table SET amount=amount+:plusAmount WHERE coinID = :coinId")
+//    suspend fun updateCoinHolding(coinId: String,plusAmount: Double):Int
 
 }

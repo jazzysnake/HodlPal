@@ -37,6 +37,6 @@ class HoldingsRepository(private val dao: Dao) {
     }
 
     suspend fun updateCoinHolding(coinHolding: CoinHolding):Int {
-        return dao.updateCoinHolding(coinHolding.coin.id,coinHolding.amount)
+        return dao.updateCoinHolding(coinHolding.coin.id,coinHolding.amount,coinHolding.coin.price)
     }
 }
