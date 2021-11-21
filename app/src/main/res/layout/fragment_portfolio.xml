@@ -41,35 +41,35 @@
         android:id="@+id/evaluation_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:background="@color/design_default_color_primary_variant"
+        android:paddingHorizontal="16dp"
         android:text="@string/total_evaluation"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/portfolio_header"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/holdings_recycler"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginVertical="10dp"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintBottom_toTopOf="@id/portfolio_pie" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/portfolio_pie" />
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/portfolio_pie"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/evaluation_tv"
+        app:layout_constraintBottom_toTopOf="@id/evaluation_tv"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/holdings_recycler"
-        android:layout_marginBottom="10dp"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/portfolio_header">
 
     </com.github.mikephil.charting.charts.PieChart>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/holdings_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/holdings_recycler"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/portfolio_pie"
-        >
+        app:layout_constraintTop_toBottomOf="@id/evaluation_tv"
+        tools:layout_editor_absoluteX="172dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 

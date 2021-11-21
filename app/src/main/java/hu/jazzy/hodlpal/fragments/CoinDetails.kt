@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.databinding.FragmentCoinDetaisBinding
+import hu.jazzy.hodlpal.model.Fiat
 import hu.jazzy.hodlpal.viewmodels.CoinsViewModel
 import hu.jazzy.hodlpal.viewmodels.HoldingsViewModel
 import java.text.DecimalFormat
@@ -26,6 +27,7 @@ class CoinDetails : Fragment() {
     private lateinit var holdingsViewModel: HoldingsViewModel// by activityViewModels()
     private val longFormat: DecimalFormat = DecimalFormat("#.#######")
     private val shortFormat: DecimalFormat = DecimalFormat("#.##")
+    private lateinit var chosenFiat:Fiat
 
 
     override fun onCreateView(
@@ -37,16 +39,21 @@ class CoinDetails : Fragment() {
         binding = FragmentCoinDetaisBinding.inflate(layoutInflater)
         val index: Int = args.coinRank-1
         holdingsViewModel = ViewModelProvider(this)[HoldingsViewModel::class.java]
+
+
+        coinsViewModel.getChosenFiat().observe(viewLifecycleOwner,{
+            chosenFiat=it
+        })
         coinsViewModel.getCoinsResponse().observe(viewLifecycleOwner, { response ->
             if (response.isSuccessful) {
                 response.body()?.let {
                     val coin = response.body()!!.coins[index]
                     binding.coinNameTv.text = coin.name
                     binding.imageView.load(coin.icon)
-                    fillTextView(binding.currentPriceTv,R.string.current_price," "+longFormat.format(coin.price)+"$")
+                    fillTextView(binding.currentPriceTv,R.string.current_price," "+longFormat.format(coin.price*chosenFiat.rate)+chosenFiat.symbol)
                     fillTextView(binding.availableSupplyTv,R.string.available_supply, " "+shortFormat.format(coin.availableSupply))
                     fillTextView(binding.totalSupplyTv,R.string.total_supply, " "+shortFormat.format(coin.totalSupply))
-                    fillTextView(binding.marketCapTv,R.string.market_cap, " "+shortFormat.format(coin.marketCap)+"$")
+                    fillTextView(binding.marketCapTv,R.string.market_cap, " "+shortFormat.format(coin.marketCap*chosenFiat.rate)+chosenFiat.symbol)
                     fillTextView(binding.rankTv,R.string.rank, " #"+coin.rank.toString())
                     setClickListener()
                 }
@@ -60,7 +67,7 @@ class CoinDetails : Fragment() {
 
     private fun setClickListener(){
         binding.buyButton.setOnClickListener {
-            val action = CoinDetailsDirections.actionCoinDetailsToAddCoin(args.coinRank)
+            val action = CoinDetailsDirections.actionCoinDetailsToAddCoin(args.coinRank,chosenFiat)
             findNavController().navigate(action)
         }
     }

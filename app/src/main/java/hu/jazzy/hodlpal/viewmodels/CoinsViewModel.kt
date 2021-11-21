@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hu.jazzy.hodlpal.model.Coin
 import hu.jazzy.hodlpal.model.CoinList
+import hu.jazzy.hodlpal.model.Fiat
 import hu.jazzy.hodlpal.repository.CoinRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -13,7 +14,9 @@ import retrofit2.Response
 class CoinsViewModel :ViewModel() {
 
     private var coinsResponse: MutableLiveData<Response<CoinList>> = MutableLiveData()
+    private var fiatResponse: MutableLiveData<Response<List<Fiat>>> = MutableLiveData()
     private var coinsSearch: MutableLiveData<ArrayList<Coin>> = MutableLiveData()
+    private val chosenFiat: MutableLiveData<Fiat> = MutableLiveData()
     private val repository:CoinRepository = CoinRepository()
 
 
@@ -25,6 +28,45 @@ class CoinsViewModel :ViewModel() {
         return coinsResponse
     }
 
+    fun getFiatsResponse():LiveData<Response<List<Fiat>>>{
+        viewModelScope.launch {
+            val fiats = repository.getFiats()
+            fiatResponse.value= fiats
+        }
+        return  fiatResponse
+    }
+
+    fun chooseFiat(index:Int):MutableLiveData<Fiat>{
+        getFiatsResponse()
+        if (fiatResponse.value!=null){
+            if (fiatResponse.value!!.isSuccessful){
+                if (fiatResponse.value!!.body()!!.size>index){
+                    chosenFiat.value = fiatResponse.value!!.body()!![index]
+                    return chosenFiat
+                }
+            }
+        }
+        return MutableLiveData(Fiat("USD",1.0,"$","https://s3-us-west-2.amazonaws.com/coin-stats-icons/flags/USD.png"))
+    }
+
+    fun getChosenFiat():MutableLiveData<Fiat>{
+        getFiatsResponse()
+        if (fiatResponse.value!=null){
+            if (fiatResponse.value!!.isSuccessful){
+                for (i in fiatResponse.value!!.body()!!){
+                    if (chosenFiat.value!=null){
+                        if (i.name== chosenFiat.value!!.name)
+                        return chooseFiat(fiatResponse.value!!.body()!!.indexOf(i))
+                    }
+                    else{
+                        if (i.name== "USD")
+                            return chooseFiat(fiatResponse.value!!.body()!!.indexOf(i))
+                    }
+                }
+            }
+        }
+        return MutableLiveData(Fiat("USD",1.0,"$","https://s3-us-west-2.amazonaws.com/coin-stats-icons/flags/USD.png"))
+    }
 
     fun searchCoinResponse(queryString: String) : LiveData<ArrayList<Coin>> {
         queryCoins(queryString)

@@ -1,10 +1,9 @@
 package hu.jazzy.hodlpal.repository
 
-import android.util.Log
-import hu.jazzy.hodlpal.model.Coin
+
 import hu.jazzy.hodlpal.model.CoinList
+import hu.jazzy.hodlpal.model.Fiat
 import hu.jazzy.hodlpal.network.RetrofitInstance
-import retrofit2.Call
 import retrofit2.Response
 
 
@@ -15,5 +14,9 @@ class CoinRepository {
             limit = 1000,
             currency = "USD"
         )
+    }
+
+    suspend fun getFiats():Response<List<Fiat>>{
+        return RetrofitInstance.api.getFiats()
     }
 }

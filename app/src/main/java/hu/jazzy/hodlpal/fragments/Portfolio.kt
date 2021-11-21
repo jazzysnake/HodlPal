@@ -1,13 +1,12 @@
 package hu.jazzy.hodlpal.fragments
 
-import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.animation.Easing
@@ -19,8 +18,8 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.adapter.CoinHoldingAdapter
 import hu.jazzy.hodlpal.database.CoinHolding
-import hu.jazzy.hodlpal.database.PersistentCoin
 import hu.jazzy.hodlpal.databinding.FragmentPortfolioBinding
+import hu.jazzy.hodlpal.model.Fiat
 import hu.jazzy.hodlpal.viewmodels.CoinsViewModel
 import hu.jazzy.hodlpal.viewmodels.HoldingsViewModel
 import java.text.DecimalFormat
@@ -29,9 +28,11 @@ class Portfolio : Fragment() {
 
     private lateinit var binding : FragmentPortfolioBinding
     private lateinit var adapter: CoinHoldingAdapter
+    private lateinit var chosenFiat: Fiat
     private val coinsViewModel: CoinsViewModel by activityViewModels()
     private val holdingsViewModel:HoldingsViewModel by activityViewModels()
     private val df: DecimalFormat = DecimalFormat("#.##")
+    private var adapterInit =false
 
 
     override fun onCreateView(
@@ -40,37 +41,26 @@ class Portfolio : Fragment() {
     ):View{
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentPortfolioBinding.inflate(layoutInflater)
-        initRecyclerView()
         initPieChartStyle()
 
-        holdingsViewModel.readAllCoinHoldings().observe(viewLifecycleOwner,{
-            coinlist ->
-            adapter.setData(coinlist)
-            var evaluation = 0.0
-            var pieEntries = ArrayList<PieEntry>()
-            for (i in coinlist){
-                val iValue =i.amount*i.coin.price
-                evaluation+=iValue
-                val pieEntry = PieEntry(iValue.toFloat(),i.coin.symbol)
-                pieEntries.add(pieEntry)
-            }
-            val dataSet = PieDataSet(pieEntries,"")
-            dataSet.valueTextSize = 20f
-            val percentFormatter = PercentFormatter(binding.portfolioPie)
-            percentFormatter.mFormat = df
-//            dataSet.valueFormatter = percentFormatter
-            val textColors = arrayListOf<Int>()
-                for (i in coinlist)
-                    textColors.add(binding.evaluationTv.currentTextColor)
+        coinsViewModel.getChosenFiat().observe(viewLifecycleOwner,{
+            chosenFiat=it
+            if (!adapterInit)
+                initRecyclerView()
+            adapterInit=true
+        })
 
-            dataSet.setValueTextColors(textColors)
-            dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
-            val data = PieData(dataSet)
-            data.setValueFormatter(percentFormatter)
-            binding.portfolioPie.data = data
-            binding.portfolioPie.notifyDataSetChanged()
-            binding.portfolioPie.invalidate()
-            binding.evaluationTv.text = (resources.getString(R.string.total_evaluation)+" " +df.format(evaluation).toString()) + "$"
+        holdingsViewModel.readAllCoinHoldings().observe(viewLifecycleOwner,{
+            coinList ->
+            adapter.setData(coinList)
+            initPieChartData(coinList)
+            var evaluation = 0.0
+            for (i in coinList){
+                val iValue =i.amount*i.coin.price*chosenFiat.rate
+                evaluation+=iValue
+            }
+
+            binding.evaluationTv.text = (resources.getString(R.string.total_evaluation)+" " +df.format(evaluation).toString() + chosenFiat.symbol)
         })
         coinsViewModel.getCoinsResponse().observe(viewLifecycleOwner,{
             response -> if (response!=null){
@@ -88,6 +78,30 @@ class Portfolio : Fragment() {
         return binding.root
     }
 
+    private fun initPieChartData(coinList:List<CoinHolding>){
+        val pieEntries = ArrayList<PieEntry>()
+        for (i in coinList){
+            val iValue =i.amount*i.coin.price
+            val pieEntry = PieEntry(iValue.toFloat(),i.coin.symbol)
+            pieEntries.add(pieEntry)
+        }
+        val dataSet = PieDataSet(pieEntries,"")
+        dataSet.valueTextSize = 20f
+        val percentFormatter = PercentFormatter(binding.portfolioPie)
+        percentFormatter.mFormat = df
+        val textColors = arrayListOf<Int>()
+        for (i in coinList)
+            textColors.add(binding.evaluationTv.currentTextColor)
+
+        dataSet.setValueTextColors(textColors)
+        dataSet.colors = ColorTemplate.MATERIAL_COLORS.toList()
+        val data = PieData(dataSet)
+        data.setValueFormatter(percentFormatter)
+        binding.portfolioPie.data = data
+        binding.portfolioPie.notifyDataSetChanged()
+        binding.portfolioPie.invalidate()
+    }
+
     private fun initPieChartStyle(){
         binding.portfolioPie.isDrawHoleEnabled = false
         binding.portfolioPie.setEntryLabelColor(binding.evaluationTv.currentTextColor)
@@ -100,11 +114,12 @@ class Portfolio : Fragment() {
         binding.portfolioPie.animateY(1500,Easing.EaseInOutQuad)
         binding.portfolioPie.notifyDataSetChanged()
         binding.portfolioPie.invalidate()
+
     }
 
 
     private fun initRecyclerView() {
-        adapter = CoinHoldingAdapter(holdingsViewModel)
+        adapter = CoinHoldingAdapter(holdingsViewModel,chosenFiat)
         binding.holdingsRecycler.layoutManager = LinearLayoutManager(context)
         binding.holdingsRecycler.adapter = adapter
     }

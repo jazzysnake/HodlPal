@@ -10,10 +10,12 @@ import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.database.CoinHolding
 import hu.jazzy.hodlpal.database.PersistentCoin
 import hu.jazzy.hodlpal.model.Coin
+import hu.jazzy.hodlpal.model.Fiat
 import hu.jazzy.hodlpal.viewmodels.HoldingsViewModel
 import java.text.DecimalFormat
 
-class CoinHoldingAdapter(private val holdingsViewModel: HoldingsViewModel) : RecyclerView.Adapter<CoinHoldingAdapter.CoinHoldingViewHolder>() {
+class CoinHoldingAdapter(private val holdingsViewModel: HoldingsViewModel,private val chosenFiat: Fiat)
+    : RecyclerView.Adapter<CoinHoldingAdapter.CoinHoldingViewHolder>() {
 
     private var list = emptyList<CoinHolding>()
     private val df: DecimalFormat = DecimalFormat("#.####")
@@ -31,7 +33,7 @@ class CoinHoldingAdapter(private val holdingsViewModel: HoldingsViewModel) : Rec
         holder.binding.cardImage.load(coinHolding.coin.icon){
             placeholder(R.drawable.cryptocurrencies)
         }
-        var price  = coinHolding.coin.price
+        var price  = coinHolding.coin.price*chosenFiat.rate
         for (i in coinList){
             if (i.id==coinHolding.coin.id){
                 price = i.price
@@ -39,7 +41,7 @@ class CoinHoldingAdapter(private val holdingsViewModel: HoldingsViewModel) : Rec
             }
         }
         holder.binding.coinHoldingAmount.text = df.format(coinHolding.amount).toString()
-        holder.binding.coinHoldingPrice.text = (df.format(price*coinHolding.amount).toString()+" $")
+        holder.binding.coinHoldingPrice.text = (df.format(price*chosenFiat.rate*coinHolding.amount).toString()+" "+chosenFiat.symbol)
         holder.binding.coinHoldingNameTv.text = coinHolding.coin.name
         holder.binding.coinHoldingSymbolTv.text = coinHolding.coin.symbol
     }

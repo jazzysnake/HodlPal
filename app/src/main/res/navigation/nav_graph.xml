@@ -24,7 +24,11 @@
         android:id="@+id/wallet"
         android:name="hu.jazzy.hodlpal.fragments.Wallet"
         android:label="fragment_wallet"
-        tools:layout="@layout/fragment_wallet" />
+        tools:layout="@layout/fragment_wallet" >
+        <action
+            android:id="@+id/action_wallet_to_chooseCurrencyDialog"
+            app:destination="@id/chooseCurrencyDialog" />
+    </fragment>
     <fragment
         android:id="@+id/coinDetails"
         android:name="hu.jazzy.hodlpal.fragments.CoinDetails"
@@ -39,6 +43,7 @@
         <action
             android:id="@+id/action_coinDetails_to_addCoin"
             app:destination="@id/addCoin" />
+
     </fragment>
     <fragment
         android:id="@+id/addCoin"
@@ -52,6 +57,19 @@
         <argument
             android:name="coinRank"
             app:argType="integer" />
+        <argument
+            android:name="chosenfiat"
+            app:argType="hu.jazzy.hodlpal.model.Fiat" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseCurrencyDialog"
+        android:name="hu.jazzy.hodlpal.fragments.ChooseCurrencyDialog"
+        android:label="fragment_choose_currency_dialog"
+        tools:layout="@layout/fragment_choose_currency_dialog" >
+        <action
+            android:id="@+id/action_chooseCurrencyDialog_to_wallet"
+            app:destination="@id/wallet"
+            app:popUpTo="@id/wallet" />
     </fragment>
 
 </navigation>

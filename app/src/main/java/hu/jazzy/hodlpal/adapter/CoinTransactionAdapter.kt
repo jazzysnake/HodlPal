@@ -7,10 +7,12 @@ import coil.load
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.database.CoinTransaction
 import hu.jazzy.hodlpal.databinding.CoinTransactionCardLayoutBinding
+import hu.jazzy.hodlpal.model.Fiat
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
-class CoinTransactionAdapter : RecyclerView.Adapter<CoinTransactionAdapter.coinTransactionViewHolder>() {
+class CoinTransactionAdapter(private var chosenFiat: Fiat)
+    : RecyclerView.Adapter<CoinTransactionAdapter.coinTransactionViewHolder>() {
 
     private var list = emptyList<CoinTransaction>()
     private val df: DecimalFormat = DecimalFormat("#.####")
@@ -28,7 +30,7 @@ class CoinTransactionAdapter : RecyclerView.Adapter<CoinTransactionAdapter.coinT
                         placeholder(R.drawable.cryptocurrencies)
         }
         holder.binding.coinTransactionAmount.text = df.format(coinTransaction.amount).toString()
-        holder.binding.coinTransactionPrice.text = (df.format(coinTransaction.txAtPrice).toString()+" $")
+        holder.binding.coinTransactionPrice.text = (df.format(coinTransaction.txAtPrice*coinTransaction.txFiat.rate).toString()+" "+coinTransaction.txFiat.symbol)
         holder.binding.coinTransactionNameTv.text = coinTransaction.coin.name
         holder.binding.coinTransactionSymbolTv.text = coinTransaction.coin.symbol
         val pattern = "yyyy-MM-dd hh:mm"

@@ -36,13 +36,14 @@ class AddCoin : Fragment() {
     ): View {
         binding = FragmentAddCoinBinding.inflate(layoutInflater)
         val index = args.coinRank-1
+        val chosenFiat = args.chosenfiat
         coinsViewModel.getCoinsResponse().observe(viewLifecycleOwner){
             response -> if (response.isSuccessful){
             coin=response.body()!!.coins[index]
             binding.coinNameTv.text=coin.name
             binding.imageView.load(coin.icon)
             val priceInput  = EditText(requireContext())
-            priceInput.setText(coin.price.toString())
+            priceInput.setText((coin.price*chosenFiat.rate).toString())
             binding.addCoinInputPrice.text=priceInput.text
         }
         }
@@ -55,14 +56,15 @@ class AddCoin : Fragment() {
     private fun setClickListener(){
         binding.btnAddToWallet.setOnClickListener {
             val inputPrice = binding.addCoinInputPrice.text
-            val price = inputPrice!!.split(" ")[0].toDoubleOrNull()
+            var price = inputPrice!!.split(" ")[0].toDoubleOrNull()
             val inputAmount = binding.addCoinInputAmount.text
             val amount = inputAmount!!.split(" ")[0].toDoubleOrNull()
             if (amount==null||price==null){
                 Toast.makeText(requireContext(),"Please input valid values",Toast.LENGTH_SHORT).show()
             }
             else{
-                val transaction = CoinTransaction(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount)
+                price /= args.chosenfiat.rate
+                val transaction = CoinTransaction(0, PersistentCoin(coin),price,Calendar.getInstance().time,amount,args.chosenfiat)
                 holdingsViewModel.addCoinTx(transaction)
                 holdingsViewModel.updateCoinHolding(CoinHolding(0,PersistentCoin(coin),amount))
                 val coinHolding = CoinHolding(0,PersistentCoin(coin), amount = amount)
