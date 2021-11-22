@@ -61,7 +61,7 @@
             android:id="@+id/add_coin_input_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             >
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -85,7 +85,7 @@
             android:layout_width="match_parent"
             android:hint="Purchase price"
             android:layout_height="wrap_content"
-            android:inputType="number">
+            android:inputType="numberDecimal">
         </com.google.android.material.textfield.TextInputEditText>
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -1,6 +1,7 @@
 package hu.jazzy.hodlpal.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +20,20 @@ class ChooseCurrencyDialog : DialogFragment() {
     private val coinsViewModel:CoinsViewModel by activityViewModels()
     private var fiatList:List<Fiat> = emptyList()
     private var fiatStringList:ArrayList<String> = ArrayList()
+    private lateinit var arrayAdapter:ArrayAdapter<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChooseCurrencyDialogBinding.inflate(layoutInflater)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.drop_down_menu_item,fiatStringList)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        arrayAdapter = ArrayAdapter(requireContext(), R.layout.drop_down_menu_item,fiatStringList)
         binding.currencyAcTv.setAdapter(arrayAdapter)
         initButtons()
         coinsViewModel.getFiatsResponse().observe(viewLifecycleOwner,{
@@ -41,12 +49,12 @@ class ChooseCurrencyDialog : DialogFragment() {
                 }
             }
         })
-        return binding.root
     }
 
     private fun initButtons(){
         val action = ChooseCurrencyDialogDirections.actionChooseCurrencyDialogToWallet()
         binding.currencyChooseBtn.setOnClickListener {
+            coinsViewModel.chooseFiat(arrayAdapter.getPosition(binding.currencyAcTv.text.toString()))
             findNavController().navigate(action)
         }
         binding.currencyCancelBtn.setOnClickListener {

@@ -31,7 +31,7 @@ class Wallet : Fragment() {
         binding = FragmentWalletBinding.inflate(layoutInflater)
 
         initFab()
-        coinsViewModel.chooseFiat(12).observe(viewLifecycleOwner,{//12
+        coinsViewModel.getChosenFiat().observe(viewLifecycleOwner,{//12
             chosenFiat=it
             if (!adapterInit)
                 initRecyclerView()

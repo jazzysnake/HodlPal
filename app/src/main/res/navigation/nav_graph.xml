@@ -61,7 +61,7 @@
             android:name="chosenfiat"
             app:argType="hu.jazzy.hodlpal.model.Fiat" />
     </fragment>
-    <fragment
+    <dialog
         android:id="@+id/chooseCurrencyDialog"
         android:name="hu.jazzy.hodlpal.fragments.ChooseCurrencyDialog"
         android:label="fragment_choose_currency_dialog"
@@ -70,6 +70,6 @@
             android:id="@+id/action_chooseCurrencyDialog_to_wallet"
             app:destination="@id/wallet"
             app:popUpTo="@id/wallet" />
-    </fragment>
+    </dialog>
 
 </navigation>

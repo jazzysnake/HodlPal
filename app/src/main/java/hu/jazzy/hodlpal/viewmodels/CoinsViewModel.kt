@@ -1,9 +1,10 @@
 package hu.jazzy.hodlpal.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
+import androidx.lifecycle.*
 import hu.jazzy.hodlpal.model.Coin
 import hu.jazzy.hodlpal.model.CoinList
 import hu.jazzy.hodlpal.model.Fiat
@@ -11,13 +12,16 @@ import hu.jazzy.hodlpal.repository.CoinRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class CoinsViewModel :ViewModel() {
+class CoinsViewModel(application: Application) :AndroidViewModel(application) {
 
     private var coinsResponse: MutableLiveData<Response<CoinList>> = MutableLiveData()
     private var fiatResponse: MutableLiveData<Response<List<Fiat>>> = MutableLiveData()
     private var coinsSearch: MutableLiveData<ArrayList<Coin>> = MutableLiveData()
     private val chosenFiat: MutableLiveData<Fiat> = MutableLiveData()
     private val repository:CoinRepository = CoinRepository()
+    private val sharedPreferences:SharedPreferences = application.getSharedPreferences("currency_preferences", Context.MODE_PRIVATE)
+    private val editor = sharedPreferences.edit()
+
 
 
     fun getCoinsResponse():LiveData<Response<CoinList>>{
@@ -42,6 +46,10 @@ class CoinsViewModel :ViewModel() {
             if (fiatResponse.value!!.isSuccessful){
                 if (fiatResponse.value!!.body()!!.size>index){
                     chosenFiat.value = fiatResponse.value!!.body()!![index]
+                    editor.apply{
+                        putString("chosenCurrency", chosenFiat.value!!.name)
+                        apply()
+                    }
                     return chosenFiat
                 }
             }
@@ -49,24 +57,47 @@ class CoinsViewModel :ViewModel() {
         return MutableLiveData(Fiat("USD",1.0,"$","https://s3-us-west-2.amazonaws.com/coin-stats-icons/flags/USD.png"))
     }
 
+//    fun chooseFiat(index:Int):MutableLiveData<Fiat>{
+//        getFiatsResponse()
+//        chosenFiat.value = fiatResponse.value!!.body()!![index]
+//        editor.apply{
+//            putString("chosenCurrency", chosenFiat.value!!.name)
+//            apply()
+//        }
+//        return chosenFiat
+//
+//    }
+
     fun getChosenFiat():MutableLiveData<Fiat>{
+        val chosen = sharedPreferences.getString("chosenCurrency","USD")
         getFiatsResponse()
         if (fiatResponse.value!=null){
             if (fiatResponse.value!!.isSuccessful){
-                for (i in fiatResponse.value!!.body()!!){
-                    if (chosenFiat.value!=null){
-                        if (i.name== chosenFiat.value!!.name)
-                        return chooseFiat(fiatResponse.value!!.body()!!.indexOf(i))
-                    }
-                    else{
-                        if (i.name== "USD")
-                            return chooseFiat(fiatResponse.value!!.body()!!.indexOf(i))
+                for (i in fiatResponse.value!!.body()!!) {
+                    if (i.name==chosen){
+                        chosenFiat.value=i
+                        return chosenFiat
                     }
                 }
             }
         }
         return MutableLiveData(Fiat("USD",1.0,"$","https://s3-us-west-2.amazonaws.com/coin-stats-icons/flags/USD.png"))
     }
+//        if (fiatResponse.value!=null){
+//            if (fiatResponse.value!!.isSuccessful){
+//                for (i in fiatResponse.value!!.body()!!){
+//                    if (chosenFiat.value!=null){
+//                        if (i.name== chosenFiat.value!!.name)
+//                        return chooseFiat(fiatResponse.value!!.body()!!.indexOf(i))
+//                    }
+//                    else{
+//                        if (i.name== "USD")
+//                            return chooseFiat(fiatResponse.value!!.body()!!.indexOf(i))
+//                    }
+//                }
+//            }
+//        }
+
 
     fun searchCoinResponse(queryString: String) : LiveData<ArrayList<Coin>> {
         queryCoins(queryString)
