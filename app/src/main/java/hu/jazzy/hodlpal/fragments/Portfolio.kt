@@ -18,6 +18,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.adapter.CoinHoldingAdapter
 import hu.jazzy.hodlpal.database.CoinHolding
+import hu.jazzy.hodlpal.database.PersistentCoin
 import hu.jazzy.hodlpal.databinding.FragmentPortfolioBinding
 import hu.jazzy.hodlpal.model.Fiat
 import hu.jazzy.hodlpal.viewmodels.CoinsViewModel
@@ -32,7 +33,6 @@ class Portfolio : Fragment() {
     private val coinsViewModel: CoinsViewModel by activityViewModels()
     private val holdingsViewModel:HoldingsViewModel by activityViewModels()
     private val df: DecimalFormat = DecimalFormat("#.##")
-    private var adapterInit =false
 
 
     override fun onCreateView(
@@ -42,20 +42,19 @@ class Portfolio : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentPortfolioBinding.inflate(layoutInflater)
         initPieChartStyle()
+        initRecyclerView()
+
 
         coinsViewModel.getChosenFiat().observe(viewLifecycleOwner,{
             chosenFiat=it
-            if (!adapterInit)
-                initRecyclerView()
-            adapterInit=true
+            adapter.setFiat(chosenFiat)
         })
 
         holdingsViewModel.readAllCoinHoldings().observe(viewLifecycleOwner,{
-            coinList ->
-            adapter.setData(coinList)
-            initPieChartData(coinList)
+            adapter.setData(it)
+            initPieChartData(it)
             var evaluation = 0.0
-            for (i in coinList){
+            for (i in it){
                 val iValue =i.amount*i.coin.price*chosenFiat.rate
                 evaluation+=iValue
             }
@@ -67,7 +66,18 @@ class Portfolio : Fragment() {
             if (response.isSuccessful){
                 if (response.body()!=null){
                     response.body()?.let {
-                        adapter.setCoinList(response.body()!!.coins)
+                        val adapterdata =adapter.getData()
+                        if (adapterdata.isNotEmpty()){
+                            for (heldCoin in adapterdata){
+                                for (coin in it.coins){
+                                    if (heldCoin.coin.name==coin.name){
+                                        holdingsViewModel.updateCoinHolding(CoinHolding(heldCoin.id,
+                                            PersistentCoin(coin),0.0
+                                        ))
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -119,7 +129,7 @@ class Portfolio : Fragment() {
 
 
     private fun initRecyclerView() {
-        adapter = CoinHoldingAdapter(holdingsViewModel,chosenFiat)
+        adapter = CoinHoldingAdapter()
         binding.holdingsRecycler.layoutManager = LinearLayoutManager(context)
         binding.holdingsRecycler.adapter = adapter
     }

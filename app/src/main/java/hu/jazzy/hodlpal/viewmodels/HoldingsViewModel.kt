@@ -48,6 +48,12 @@ class HoldingsViewModel(application: Application) :
         return res
     }
 
+    fun deleteCoinHolding(coinHolding: CoinHolding){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteCoinHolding(coinHolding)
+        }
+    }
+
     fun addCoinHolding(coinHolding: CoinHolding):Long{
         var idk :Long = -100
         viewModelScope.launch(Dispatchers.IO) {
@@ -57,10 +63,7 @@ class HoldingsViewModel(application: Application) :
     }
 
     fun readAllCoinHoldings():LiveData<List<CoinHolding>>{
-        var list :LiveData<List<CoinHolding>> = MutableLiveData()
-            list = repository.readAllCoinHoldings()
-
-        return list
+        return repository.readAllCoinHoldings()
     }
 
     fun updateCoinHolding(coinHolding: CoinHolding):Int {

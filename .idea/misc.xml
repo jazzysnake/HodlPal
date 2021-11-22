@@ -7,14 +7,17 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/card_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/coin_card_layout.xml" value="0.35833333333333334" />
+        <entry key="app/src/main/res/layout/coin_holding_card_layout.xml" value="0.25226449275362317" />
         <entry key="app/src/main/res/layout/fragment_add_coin.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/fragment_choose_currency_dialog.xml" value="0.259963768115942" />
         <entry key="app/src/main/res/layout/fragment_coin_details.xml" value="0.16927083333333334" />
         <entry key="app/src/main/res/layout/fragment_coin_detais.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_coins.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/fragment_portfolio.xml" value="0.17239583333333333" />
+        <entry key="app/src/main/res/layout/fragment_sell_coin.xml" value="0.25226449275362317" />
         <entry key="app/src/main/res/layout/fragment_wallet.xml" value="0.17239583333333333" />
         <entry key="app/src/main/res/layout/heldcoin_card_layout.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/pie_chart_layout.xml" value="0.19479166666666667" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.17239583333333333" />
       </map>
     </option>

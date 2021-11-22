@@ -24,6 +24,10 @@ class HoldingsRepository(private val dao: Dao) {
         dao.updateCoinTx(coinTransaction)
     }
 
+    suspend fun deleteCoinHolding(coinHolding: CoinHolding){
+        dao.deleteCoinHolding(coinHolding.id)
+    }
+
      fun getCoinHoldingByCoinID(coinId: String): LiveData<CoinHolding> {
         return  dao.getCoinHoldingByCoinID(coinId)
     }

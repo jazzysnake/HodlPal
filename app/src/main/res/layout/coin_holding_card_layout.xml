@@ -19,9 +19,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:baselineAligned="false"
+        android:clickable="false"
         android:padding="8dp"
         android:weightSum="2">
-
 
 
         <LinearLayout
@@ -32,6 +32,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <ImageView
                 android:id="@+id/card_image"
                 android:layout_width="32dp"

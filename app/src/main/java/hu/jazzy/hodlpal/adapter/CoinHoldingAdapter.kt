@@ -1,29 +1,43 @@
 package hu.jazzy.hodlpal.adapter
 
+import android.util.Log
 import hu.jazzy.hodlpal.databinding.CoinHoldingCardLayoutBinding
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.database.CoinHolding
 import hu.jazzy.hodlpal.database.PersistentCoin
+import hu.jazzy.hodlpal.fragments.PortfolioDirections
 import hu.jazzy.hodlpal.model.Coin
 import hu.jazzy.hodlpal.model.Fiat
 import hu.jazzy.hodlpal.viewmodels.HoldingsViewModel
 import java.text.DecimalFormat
+import android.view.MotionEvent
 
-class CoinHoldingAdapter(private val holdingsViewModel: HoldingsViewModel,private val chosenFiat: Fiat)
+import android.view.View.OnTouchListener
+import androidx.fragment.app.findFragment
+import androidx.lifecycle.LiveData
+import hu.jazzy.hodlpal.fragments.Portfolio
+import hu.jazzy.hodlpal.viewmodels.CoinsViewModel
+
+
+class CoinHoldingAdapter()
     : RecyclerView.Adapter<CoinHoldingAdapter.CoinHoldingViewHolder>() {
+
 
     private var list = emptyList<CoinHolding>()
     private val df: DecimalFormat = DecimalFormat("#.####")
     private var coinList = emptyList<Coin>()
+    private var chosenFiat = Fiat("USD",1.0,"$","https://s3-us-west-2.amazonaws.com/coin-stats-icons/flags/USD.png")
 
     inner class CoinHoldingViewHolder(var binding: CoinHoldingCardLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinHoldingViewHolder {
+
 
         return CoinHoldingViewHolder(CoinHoldingCardLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
@@ -34,17 +48,22 @@ class CoinHoldingAdapter(private val holdingsViewModel: HoldingsViewModel,privat
             placeholder(R.drawable.cryptocurrencies)
         }
         var price  = coinHolding.coin.price*chosenFiat.rate
-        for (i in coinList){
-            if (i.id==coinHolding.coin.id){
-                price = i.price
-                holdingsViewModel.updateCoinHolding(CoinHolding(coinHolding.id, PersistentCoin(i),0.0))
-            }
+        holder.binding.coinHoldingCardView.setOnClickListener {
+            val action = PortfolioDirections.actionPortfolioToSellCoin(coinHolding.coin.id,chosenFiat)
+            holder.binding.coinHoldingCardView.findNavController().navigate(action)
         }
+//        holder.binding.coinHoldingCardView.setOnTouchListener { v, event ->
+//            // Setting on Touch Listener for handling the touch inside ScrollView
+//            // Disallow the touch request for parent scroll on touch of child view
+//            holder.binding.root.findFragment<Portfolio>(). .requestDisallowInterceptTouchEvent(true)
+//            false
+//        }
         holder.binding.coinHoldingAmount.text = df.format(coinHolding.amount).toString()
         holder.binding.coinHoldingPrice.text = (df.format(price*chosenFiat.rate*coinHolding.amount).toString()+" "+chosenFiat.symbol)
         holder.binding.coinHoldingNameTv.text = coinHolding.coin.name
         holder.binding.coinHoldingSymbolTv.text = coinHolding.coin.symbol
     }
+
 
     override fun getItemCount(): Int {
         return list.size
@@ -53,10 +72,16 @@ class CoinHoldingAdapter(private val holdingsViewModel: HoldingsViewModel,privat
     fun setData(coinHoldings :List<CoinHolding>){
         this.list = coinHoldings
         notifyDataSetChanged()
+
     }
 
-    fun setCoinList(coin: List<Coin>){
-        this.coinList=coin
+    fun setFiat(fiat: Fiat){
+        this.chosenFiat = fiat
+
         notifyDataSetChanged()
+    }
+
+    fun getData():List<CoinHolding>{
+        return list
     }
 }

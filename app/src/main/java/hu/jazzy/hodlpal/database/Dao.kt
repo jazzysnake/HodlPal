@@ -22,6 +22,9 @@ interface Dao {
     @Query(value = "SELECT * FROM coin_holdings_table ORDER BY rank DESC")
     fun readAllCoinHoldings():LiveData<List<CoinHolding>>
 
+    @Query("DELETE FROM coin_holdings_table WHERE id=:iD")
+    suspend fun deleteCoinHolding(iD: Int)
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addCoinHolding(coin:CoinHolding):Long
 

@@ -19,7 +19,11 @@
         android:id="@+id/portfolio"
         android:name="hu.jazzy.hodlpal.fragments.Portfolio"
         android:label="fragment_portfolio"
-        tools:layout="@layout/fragment_portfolio" />
+        tools:layout="@layout/fragment_portfolio" >
+        <action
+            android:id="@+id/action_portfolio_to_sellCoin"
+            app:destination="@id/sellCoin" />
+    </fragment>
     <fragment
         android:id="@+id/wallet"
         android:name="hu.jazzy.hodlpal.fragments.Wallet"
@@ -71,5 +75,22 @@
             app:destination="@id/wallet"
             app:popUpTo="@id/wallet" />
     </dialog>
+    <fragment
+        android:id="@+id/sellCoin"
+        android:name="hu.jazzy.hodlpal.fragments.SellCoin"
+        android:label="fragment_sell_coin"
+        tools:layout="@layout/fragment_sell_coin" >
+        <action
+            android:id="@+id/action_sellCoin_to_portfolio"
+            app:destination="@id/portfolio"
+            app:popUpTo="@id/portfolio" />
+        <argument
+            android:name="coinId"
+            app:argType="string" />
+        <argument
+            android:name="chosenFiat"
+            app:argType="hu.jazzy.hodlpal.model.Fiat" />
+
+    </fragment>
 
 </navigation>
