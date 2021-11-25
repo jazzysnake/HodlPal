@@ -52,14 +52,8 @@ class CoinHoldingAdapter()
             val action = PortfolioDirections.actionPortfolioToSellCoin(coinHolding.coin.id,chosenFiat)
             holder.binding.coinHoldingCardView.findNavController().navigate(action)
         }
-//        holder.binding.coinHoldingCardView.setOnTouchListener { v, event ->
-//            // Setting on Touch Listener for handling the touch inside ScrollView
-//            // Disallow the touch request for parent scroll on touch of child view
-//            holder.binding.root.findFragment<Portfolio>(). .requestDisallowInterceptTouchEvent(true)
-//            false
-//        }
         holder.binding.coinHoldingAmount.text = df.format(coinHolding.amount).toString()
-        holder.binding.coinHoldingPrice.text = (df.format(price*chosenFiat.rate*coinHolding.amount).toString()+" "+chosenFiat.symbol)
+        holder.binding.coinHoldingPrice.text = (df.format(price*coinHolding.amount).toString()+" "+chosenFiat.symbol)
         holder.binding.coinHoldingNameTv.text = coinHolding.coin.name
         holder.binding.coinHoldingSymbolTv.text = coinHolding.coin.symbol
     }

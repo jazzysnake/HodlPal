@@ -1,6 +1,7 @@
 package hu.jazzy.hodlpal.repository
 
 
+import hu.jazzy.hodlpal.model.Chart
 import hu.jazzy.hodlpal.model.CoinList
 import hu.jazzy.hodlpal.model.Fiat
 import hu.jazzy.hodlpal.network.RetrofitInstance
@@ -18,5 +19,9 @@ class CoinRepository {
 
     suspend fun getFiats():Response<List<Fiat>>{
         return RetrofitInstance.api.getFiats()
+    }
+
+    suspend fun getChart(period: String, coinId:String):Response<Chart>{
+        return RetrofitInstance.api.getChart(period = period,coinId=coinId)
     }
 }

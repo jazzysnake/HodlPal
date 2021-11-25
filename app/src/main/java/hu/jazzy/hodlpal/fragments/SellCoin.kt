@@ -55,10 +55,6 @@ class SellCoin : Fragment() {
                                 binding.sellCoinInputPrice.setText((coin.price*chosenFiat.rate).toString())
                             }
                         }
-//            binding.coinNameTv.text=coin.name
-//            binding.imageView.load(coin.icon)
-//            val priceInput  = EditText(requireContext())
-//            binding.addCoinInputPrice.text=priceInput.text
                     }
                     }
                 }

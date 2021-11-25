@@ -1,5 +1,6 @@
 package hu.jazzy.hodlpal.network
 
+import hu.jazzy.hodlpal.model.Chart
 import hu.jazzy.hodlpal.model.CoinList
 import hu.jazzy.hodlpal.model.Fiat
 import retrofit2.Response
@@ -16,4 +17,10 @@ interface Api {
 
     @GET("fiats")
     suspend fun getFiats():Response<List<Fiat>>
+
+    @GET("charts")
+    suspend fun getChart(
+        @Query("period")period: String,
+        @Query("coinId")coinId: String,
+    ): Response<Chart>
 }
