@@ -3,18 +3,12 @@ package hu.jazzy.hodlpal.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import hu.jazzy.hodlpal.database.CoinHolding
 import hu.jazzy.hodlpal.database.CoinTransaction
 import hu.jazzy.hodlpal.database.HoldingsDatabase
-import hu.jazzy.hodlpal.database.PersistentCoin
-import hu.jazzy.hodlpal.model.Coin
 import hu.jazzy.hodlpal.repository.HoldingsRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HoldingsViewModel(application: Application) :
@@ -34,18 +28,6 @@ class HoldingsViewModel(application: Application) :
         viewModelScope.launch(Dispatchers.IO) {
             repository.addCoinTx(coinTransaction)
         }
-    }
-
-    fun getCoinTxById(coinId: String):List<CoinTransaction>{
-         return repository.getCoinTxById(coinId)
-    }
-
-    fun getCoinHoldingByCoinID(coinId: String): LiveData<CoinHolding> {
-        var res :LiveData<CoinHolding> = MutableLiveData()
-        viewModelScope.launch(Dispatchers.IO) {
-            res = repository.getCoinHoldingByCoinID(coinId)
-        }
-        return res
     }
 
     fun deleteCoinHolding(coinHolding: CoinHolding){

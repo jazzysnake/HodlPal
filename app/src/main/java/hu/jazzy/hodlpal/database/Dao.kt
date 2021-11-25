@@ -13,12 +13,6 @@ interface Dao {
     @Query("SELECT * FROM coin_transaction_table ORDER BY txDate DESC")
     fun readAllCoinTxs():LiveData<List<CoinTransaction>>
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateCoinTx(coinTransaction: CoinTransaction)
-
-    @Query("SELECT * FROM coin_transaction_table WHERE coinID = :coinId")
-    fun getCoinTxById(coinId:String):List<CoinTransaction>
-
     @Query(value = "SELECT * FROM coin_holdings_table ORDER BY rank DESC")
     fun readAllCoinHoldings():LiveData<List<CoinHolding>>
 
@@ -33,8 +27,4 @@ interface Dao {
 
     @Query("UPDATE coin_holdings_table SET amount=amount+:plusAmount, price=:price WHERE coinID = :coinId")
     suspend fun updateCoinHolding(coinId: String,plusAmount: Double,price:Double):Int
-//
-//    @Query("UPDATE coin_holdings_table SET amount=amount+:plusAmount WHERE coinID = :coinId")
-//    suspend fun updateCoinHolding(coinId: String,plusAmount: Double):Int
-
 }

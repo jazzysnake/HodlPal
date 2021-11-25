@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import hu.jazzy.hodlpal.adapter.CoinAdapter
 import hu.jazzy.hodlpal.databinding.FragmentCoinsBinding
@@ -33,7 +31,7 @@ class Coins : Fragment(),SearchView.OnQueryTextListener {
         searchView=binding.searchView
         searchView.setOnQueryTextListener(this)
         initRecyclerView()
-        viewModel.getCoinsResponse().observe(viewLifecycleOwner, Observer {
+        viewModel.getCoinsResponse().observe(viewLifecycleOwner, {
             response -> if (response!=null){
             if (response.isSuccessful){
                 if (response.body()!=null){
@@ -65,7 +63,7 @@ class Coins : Fragment(),SearchView.OnQueryTextListener {
     }
 
     private fun searchCoins(query: String){
-        viewModel.searchCoinResponse(query).observe(viewLifecycleOwner, Observer {
+        viewModel.searchCoinResponse(query).observe(viewLifecycleOwner, {
             list -> adapter.setData(list)
         })
     }

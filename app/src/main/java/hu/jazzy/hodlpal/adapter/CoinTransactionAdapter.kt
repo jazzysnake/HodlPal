@@ -7,24 +7,23 @@ import coil.load
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.database.CoinTransaction
 import hu.jazzy.hodlpal.databinding.CoinTransactionCardLayoutBinding
-import hu.jazzy.hodlpal.model.Fiat
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
-class CoinTransactionAdapter(private var chosenFiat: Fiat)
-    : RecyclerView.Adapter<CoinTransactionAdapter.coinTransactionViewHolder>() {
+class CoinTransactionAdapter
+    : RecyclerView.Adapter<CoinTransactionAdapter.CoinTransactionViewHolder>() {
 
     private var list = emptyList<CoinTransaction>()
     private val df: DecimalFormat = DecimalFormat("#.####")
 
-    inner class coinTransactionViewHolder(var binding: CoinTransactionCardLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class CoinTransactionViewHolder(var binding: CoinTransactionCardLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): coinTransactionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinTransactionViewHolder {
 
-        return coinTransactionViewHolder(CoinTransactionCardLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return CoinTransactionViewHolder(CoinTransactionCardLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
-    override fun onBindViewHolder(holder: coinTransactionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CoinTransactionViewHolder, position: Int) {
         val coinTransaction = list[position]
         holder.binding.cardImage.load(coinTransaction.coin.icon){
                         placeholder(R.drawable.cryptocurrencies)

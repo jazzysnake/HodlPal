@@ -54,7 +54,7 @@ class Wallet : Fragment() {
     }
 
     private fun initRecyclerView() {
-        transactionAdapter = CoinTransactionAdapter(chosenFiat)
+        transactionAdapter = CoinTransactionAdapter()
         binding.walletList.layoutManager = LinearLayoutManager(context)
         binding.walletList.adapter = transactionAdapter
     }

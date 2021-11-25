@@ -62,9 +62,7 @@ dependencies {
     //viewModel
     def viewModel_version = "2.4.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewModel_version"
-    //implementation "androidx.lifecycle:lifecycle-extensions:$viewModel_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$viewModel_version"
-
     //coil
     implementation("io.coil-kt:coil:1.4.0")
     //room

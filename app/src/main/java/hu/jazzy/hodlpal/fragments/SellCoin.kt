@@ -1,18 +1,15 @@
 package hu.jazzy.hodlpal.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
-import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.database.CoinHolding
 import hu.jazzy.hodlpal.database.CoinTransaction
 import hu.jazzy.hodlpal.database.PersistentCoin

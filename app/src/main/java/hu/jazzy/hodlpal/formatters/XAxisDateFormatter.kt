@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat
 
 class XAxisDateFormatter: ValueFormatter() {
 
-    private val sdf =  SimpleDateFormat("dd MMM YY")
+    private val sdf =  SimpleDateFormat("dd MMM yy")
     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
         val longVal = value.toLong()
         return sdf.format(Converter.fromLongToDate(longVal))

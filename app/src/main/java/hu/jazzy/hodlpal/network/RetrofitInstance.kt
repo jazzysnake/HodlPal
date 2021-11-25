@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
 
-    const val BASE_URL = "https://api.coinstats.app/public/v1/"
+    private const val BASE_URL = "https://api.coinstats.app/public/v1/"
 
     private val retrofit by lazy {
         Retrofit.Builder()

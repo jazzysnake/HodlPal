@@ -3,7 +3,6 @@ package hu.jazzy.hodlpal.viewmodels
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.*
 import hu.jazzy.hodlpal.model.Coin
 import hu.jazzy.hodlpal.model.CoinList
@@ -57,16 +56,6 @@ class CoinsViewModel(application: Application) :AndroidViewModel(application) {
         return MutableLiveData(Fiat("USD",1.0,"$","https://s3-us-west-2.amazonaws.com/coin-stats-icons/flags/USD.png"))
     }
 
-//    fun chooseFiat(index:Int):MutableLiveData<Fiat>{
-//        getFiatsResponse()
-//        chosenFiat.value = fiatResponse.value!!.body()!![index]
-//        editor.apply{
-//            putString("chosenCurrency", chosenFiat.value!!.name)
-//            apply()
-//        }
-//        return chosenFiat
-//
-//    }
 
     fun getChosenFiat():MutableLiveData<Fiat>{
         val chosen = sharedPreferences.getString("chosenCurrency","USD")
@@ -83,20 +72,6 @@ class CoinsViewModel(application: Application) :AndroidViewModel(application) {
         }
         return MutableLiveData(Fiat("USD",1.0,"$","https://s3-us-west-2.amazonaws.com/coin-stats-icons/flags/USD.png"))
     }
-//        if (fiatResponse.value!=null){
-//            if (fiatResponse.value!!.isSuccessful){
-//                for (i in fiatResponse.value!!.body()!!){
-//                    if (chosenFiat.value!=null){
-//                        if (i.name== chosenFiat.value!!.name)
-//                        return chooseFiat(fiatResponse.value!!.body()!!.indexOf(i))
-//                    }
-//                    else{
-//                        if (i.name== "USD")
-//                            return chooseFiat(fiatResponse.value!!.body()!!.indexOf(i))
-//                    }
-//                }
-//            }
-//        }
 
 
     fun searchCoinResponse(queryString: String) : LiveData<ArrayList<Coin>> {

@@ -1,6 +1,5 @@
 package hu.jazzy.hodlpal.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController

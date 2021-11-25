@@ -1,7 +1,6 @@
 package hu.jazzy.hodlpal.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -66,9 +65,9 @@ class Portfolio : Fragment() {
             if (response.isSuccessful){
                 if (response.body()!=null){
                     response.body()?.let {
-                        val adapterdata =adapter.getData()
-                        if (adapterdata.isNotEmpty()){
-                            for (heldCoin in adapterdata){
+                        val adapterData =adapter.getData()
+                        if (adapterData.isNotEmpty()){
+                            for (heldCoin in adapterData){
                                 for (coin in it.coins){
                                     if (heldCoin.coin.name==coin.name){
                                         holdingsViewModel.updateCoinHolding(CoinHolding(heldCoin.id,

@@ -1,8 +1,6 @@
 package hu.jazzy.hodlpal.adapter
 
-import android.util.Log
 import hu.jazzy.hodlpal.databinding.CoinHoldingCardLayoutBinding
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -10,28 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.database.CoinHolding
-import hu.jazzy.hodlpal.database.PersistentCoin
 import hu.jazzy.hodlpal.fragments.PortfolioDirections
-import hu.jazzy.hodlpal.model.Coin
 import hu.jazzy.hodlpal.model.Fiat
-import hu.jazzy.hodlpal.viewmodels.HoldingsViewModel
 import java.text.DecimalFormat
-import android.view.MotionEvent
-
-import android.view.View.OnTouchListener
-import androidx.fragment.app.findFragment
-import androidx.lifecycle.LiveData
-import hu.jazzy.hodlpal.fragments.Portfolio
-import hu.jazzy.hodlpal.viewmodels.CoinsViewModel
 
 
-class CoinHoldingAdapter()
+class CoinHoldingAdapter
     : RecyclerView.Adapter<CoinHoldingAdapter.CoinHoldingViewHolder>() {
 
 
     private var list = emptyList<CoinHolding>()
     private val df: DecimalFormat = DecimalFormat("#.####")
-    private var coinList = emptyList<Coin>()
     private var chosenFiat = Fiat("USD",1.0,"$","https://s3-us-west-2.amazonaws.com/coin-stats-icons/flags/USD.png")
 
     inner class CoinHoldingViewHolder(var binding: CoinHoldingCardLayoutBinding) : RecyclerView.ViewHolder(binding.root)
@@ -47,7 +34,7 @@ class CoinHoldingAdapter()
         holder.binding.cardImage.load(coinHolding.coin.icon){
             placeholder(R.drawable.cryptocurrencies)
         }
-        var price  = coinHolding.coin.price*chosenFiat.rate
+        val price  = coinHolding.coin.price*chosenFiat.rate
         holder.binding.coinHoldingCardView.setOnClickListener {
             val action = PortfolioDirections.actionPortfolioToSellCoin(coinHolding.coin.id,chosenFiat)
             holder.binding.coinHoldingCardView.findNavController().navigate(action)
