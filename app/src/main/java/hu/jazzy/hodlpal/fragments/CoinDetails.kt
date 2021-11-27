@@ -21,6 +21,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import hu.jazzy.hodlpal.R
 import hu.jazzy.hodlpal.databinding.FragmentCoinDetaisBinding
+import hu.jazzy.hodlpal.formatters.PointLogValueFormatter
 import hu.jazzy.hodlpal.formatters.XAxisDateFormatter
 import hu.jazzy.hodlpal.formatters.YAxisLogFormatter
 import hu.jazzy.hodlpal.model.Chart
@@ -46,6 +47,8 @@ class CoinDetails : Fragment() {
     private var timeFrameToggleList:MutableLiveData<ArrayList<Boolean>> = MutableLiveData(arrayListOf(false,false,false,false,false,false,true))
     private var period:MutableLiveData<String> = MutableLiveData("all")
     private lateinit var chartData: Chart
+    private val logAxisFormatter:YAxisLogFormatter = YAxisLogFormatter()
+    private val pointLogValueFormatter:PointLogValueFormatter=PointLogValueFormatter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -145,13 +148,20 @@ class CoinDetails : Fragment() {
 
         val dataset= LineDataSet(entries,"price")
         if (isLogScale){
-            lineChart.axisRight.valueFormatter = YAxisLogFormatter()
+            lineChart.axisRight.valueFormatter = logAxisFormatter
         }
         else{
-            lineChart.axisRight.valueFormatter=LineChart(requireContext()).axisRight.valueFormatter
+            lineChart.axisRight.valueFormatter=lineChart.axisLeft.valueFormatter
         }
         dataset.setDrawCircles(false)
         val data = LineData(dataset)
+        data.setValueTextColor(binding.availableSupplyTv.currentTextColor)
+        data.setValueTextSize(10.0f)
+        if(isLogScale){
+            data.setValueFormatter(pointLogValueFormatter)
+        }else {
+            data.setValueFormatter(lineChart.axisLeft.valueFormatter)
+        }
         lineChart.data = data
         lineChart.invalidate()
         lineChart.notifyDataSetChanged()
