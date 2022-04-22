@@ -141,7 +141,7 @@ class CoinDetails : Fragment() {
             val x = it[0]
             var y = it[1]*chosenFiat.rate
             if (isLogScale)
-                y= log(y+1)
+                y= log(y)
             val entry = Entry(x.toFloat(),y.toFloat())
             entries.add(entry)
         }
